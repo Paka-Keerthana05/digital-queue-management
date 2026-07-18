@@ -15,6 +15,7 @@ import com.dqm.enums.UserStatus;
 import com.dqm.exception.DuplicateResourceException;
 import com.dqm.exception.InvalidCredentialsException;
 import com.dqm.repository.UserRepository;
+import com.dqm.security.JwtService;
 
 @Service
 public class UserService {
@@ -24,6 +25,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
 
     // Customer Registration
     public UserResponse registerCustomer(CustomerRegistrationRequest request) {
@@ -85,7 +89,8 @@ public class UserService {
         response.setEmail(user.getEmail());
         response.setRole(user.getRole());
         response.setStatus(user.getStatus());
-
+        String token = jwtService.generateToken(user.getEmail());
+        response.setToken(token);
         return response;
     }
 
