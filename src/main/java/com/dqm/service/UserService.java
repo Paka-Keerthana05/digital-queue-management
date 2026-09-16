@@ -89,7 +89,10 @@ public class UserService {
         response.setEmail(user.getEmail());
         response.setRole(user.getRole());
         response.setStatus(user.getStatus());
-        String token = jwtService.generateToken(user.getEmail());
+        String token = jwtService.generateToken(
+        user.getEmail(),
+        user.getRole().name()
+        );
         response.setToken(token);
         return response;
     }
